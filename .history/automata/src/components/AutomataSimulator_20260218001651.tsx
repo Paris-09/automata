@@ -121,7 +121,6 @@ const DfaAbValues = {
 
 
 function validateDfa({q0, sigma, delta, F, word}: ValidateDfaProps){
-  console.log("i got this values", q0, sigma, delta, F, word)
   let q = q0
     let path = []
     for (const w of word) {

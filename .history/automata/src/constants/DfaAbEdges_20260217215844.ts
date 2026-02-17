@@ -69,9 +69,9 @@ export const DfaAbEdges: Edge[] = [
     createEdge("q11-a-q11", "source-top-left", "target-right-top"),
     createEdge("q11-b-q14", "source-right-mid", "target-top-right"),
 
-    createEdge("q12-a-q13", "source-bottom-mid", "target-top-mid"),
-    createEdge("q12-b-q12", "source-top-left", "target-right-top"),
-    
+    createEdge("q12-a-q12", "source-top-left", "target-right-top"),
+    createEdge("q12-b-q13", "source-bottom-mid", "target-top-mid"),
+
     createEdge("q13-a-q16", "source-right-mid", "target-left-mid"),
     createEdge("q13-b-q14", "source-right-top", "target-bottom-left"),
 

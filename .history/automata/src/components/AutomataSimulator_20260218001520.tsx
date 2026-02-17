@@ -121,7 +121,6 @@ const DfaAbValues = {
 
 
 function validateDfa({q0, sigma, delta, F, word}: ValidateDfaProps){
-  console.log("i got this values", q0, sigma, delta, F, word)
   let q = q0
     let path = []
     for (const w of word) {
@@ -214,13 +213,11 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
     if (input.length === 0) {
       status = "No string";
     } else {
-      let {isValid, path, info} = validateDfa({...dfaValues, word: input} )
+      let result = validateDfa({...dfaValues, word: input} )
 
-      console.log(isValid)
-      console.log(path)
-      console.log(info)
+      console.log()
 
-      status = isValid ? "VALID" : "INVALID";
+      // status = /^[A]+$/.test(input) ? "VALID" : "INVALID";
     } 
 
     setRows((prev) =>

@@ -42,6 +42,7 @@ export const DfaAbEdges: Edge[] = [
     createEdge("q2-a-q4", "source-right-mid", "target-left-mid"),
     createEdge("q2-b-q3", "source-bottom-right", "target-top-right"),
     
+
     createEdge("q3-a-q2", "source-top-left", "target-bottom-left"),
     createEdge("q3-b-q6", "source-right-mid", "target-left-mid"),
 
@@ -67,22 +68,19 @@ export const DfaAbEdges: Edge[] = [
     createEdge("q10-b-q10", "source-bottom-left", "target-right-bottom"),
 
     createEdge("q11-a-q11", "source-top-left", "target-right-top"),
-    createEdge("q11-b-q14", "source-right-mid", "target-top-right"),
+    createEdge("q11-b-q14", "source-right-mid", "target-top-mid"),
 
-    createEdge("q12-a-q13", "source-bottom-mid", "target-top-mid"),
-    createEdge("q12-b-q12", "source-top-left", "target-right-top"),
-    
+    createEdge("q12-a-q12", "source-top-left", "target-right-top"),
+    createEdge("q12-b-q13", "source-bottom-mid", "target-top-mid"),
+
     createEdge("q13-a-q16", "source-right-mid", "target-left-mid"),
-    createEdge("q13-b-q14", "source-right-top", "target-bottom-left"),
+    createEdge("q13-b-q14", "source-right-top", "target-bottom-mid"),
 
     createEdge("q14-a-q15", "source-right-top", "target-left-top"),
     createEdge("q14-b-q12", "source-left-mid", "target-right-mid"),
 
-    createEdge("q15-a-q16", "source-bottom-mid", "target-top-mid"),
     createEdge("q15-b-q14", "source-left-bottom", "target-right-bottom"),
-
-    createEdge("q16-a-q11", "source-right-top", "target-bottom-mid"),
-    createEdge("q16-b-q14", "source-left-top", "target-bottom-right"),
+    createEdge("q15-a-q16", "source-bottom-mid", "target-top-mid"),
 
 ]
 

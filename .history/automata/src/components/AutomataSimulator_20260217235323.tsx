@@ -121,26 +121,7 @@ const DfaAbValues = {
 
 
 function validateDfa({q0, sigma, delta, F, word}: ValidateDfaProps){
-  console.log("i got this values", q0, sigma, delta, F, word)
-  let q = q0
-    let path = []
-    for (const w of word) {
-        
-        if (!sigma.has(w)){ // catches invalid symbol
-            return {isValid: false, path: path, info: 'char not in the symbol'}
-        }
-        
-        let old_q = q
-        q = delta[`${q},${w}`]
-        let edge_path = `${old_q}-${w}-${q}`
-        path.push([edge_path, q])
-    }
-    
-    if (F.has(q)) {
-        return {isValid: true, path: path, info: 'Succesfully compiled the whole string with the final result of an Valid String'}
-    } else {
-        return {isValid: false, path: path, info: "Succesfully compiled the whole string with the final result of an Invalid String"}
-    }
+  
 }
 
 
@@ -157,18 +138,10 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
     }))
   );
 
-  const dfaValues = useMemo(() => {
-    if (selectedRegex == 'regex2') {
+  const {q0, sigma, delta, F } = useMemo(() => {
+    if (selectedRegex == 'regex2' && selectedModel == 'dfa') {
       return DfaAbValues
     };
-
-    return {
-      q0: "q0",
-      sigma: new Set<string>(),
-      delta: {} as Record<string, string>,
-      F: new Set<string>()
-    };
-
   }, [selectedRegex]);
 
   // -- Graph FitView --
@@ -214,13 +187,7 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
     if (input.length === 0) {
       status = "No string";
     } else {
-      let {isValid, path, info} = validateDfa({...dfaValues, word: input} )
-
-      console.log(isValid)
-      console.log(path)
-      console.log(info)
-
-      status = isValid ? "VALID" : "INVALID";
+      status = /^[A]+$/.test(input) ? "VALID" : "INVALID";
     } 
 
     setRows((prev) =>

@@ -27,14 +27,6 @@ type Props = {
   handleNavigate: (id: string) => void; 
 };
 
-type ValidateDfaProps = {
-  q0: string,
-  sigma: Set<string>,
-  delta: Record<string, string>,
-  F: Set<string>
-  word: string
-}
-
 const nodeTypes = {
     circle: CircleNode,
 };
@@ -90,57 +82,9 @@ function getDemoGraph(selectedRegex: RegexChoice) {
   const nodes = DfaAbNodes
   const edges = DfaAbEdges
 
+
+  
   return { nodes, edges };
-}
-
-
-const DfaAbValues = {
-  q0: "q0",
-  sigma: new Set(['a','b']),
-  delta: {
-    'q0,a': 'q1', 'q0,b': 'q1',
-    'q1,a': 'q2', 'q1,b': 'q3',
-    'q2,a': 'q4', 'q2,b': 'q3',
-    'q3,a': 'q2', 'q3,b': 'q6',
-    'q4,a': 'q7', 'q4,b': 'q5',
-    'q5,a': 'q9', 'q5,b': 'q6',
-    'q6,a': 'q8', 'q6,b': 'q10',
-    'q7,a': 'q7', 'q7,b': 'q9',
-    'q8,a': 'q4', 'q8,b': 'q9',
-    'q9,a': 'q11', 'q9,b': 'q12',
-    'q10,a': 'q9', 'q10,b': 'q10',
-    'q11,a': 'q11', 'q11,b': 'q14',
-    'q12,a': 'q13', 'q12,b': 'q12',
-    'q13,a': 'q16', 'q13,b': 'q14',
-    'q14,a': 'q15', 'q14,b': 'q12',
-    'q15,a': 'q16', 'q15,b': 'q14',
-    'q16,a': 'q11', 'q16,b': 'q14',
-  },
-  F: new Set(['q15', 'q16'])
-}
-
-
-function validateDfa({q0, sigma, delta, F, word}: ValidateDfaProps){
-  console.log("i got this values", q0, sigma, delta, F, word)
-  let q = q0
-    let path = []
-    for (const w of word) {
-        
-        if (!sigma.has(w)){ // catches invalid symbol
-            return {isValid: false, path: path, info: 'char not in the symbol'}
-        }
-        
-        let old_q = q
-        q = delta[`${q},${w}`]
-        let edge_path = `${old_q}-${w}-${q}`
-        path.push([edge_path, q])
-    }
-    
-    if (F.has(q)) {
-        return {isValid: true, path: path, info: 'Succesfully compiled the whole string with the final result of an Valid String'}
-    } else {
-        return {isValid: false, path: path, info: "Succesfully compiled the whole string with the final result of an Invalid String"}
-    }
 }
 
 
@@ -156,20 +100,6 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
       status: "No string",
     }))
   );
-
-  const dfaValues = useMemo(() => {
-    if (selectedRegex == 'regex2') {
-      return DfaAbValues
-    };
-
-    return {
-      q0: "q0",
-      sigma: new Set<string>(),
-      delta: {} as Record<string, string>,
-      F: new Set<string>()
-    };
-
-  }, [selectedRegex]);
 
   // -- Graph FitView --
   const { fitView } = useReactFlow();
@@ -207,21 +137,10 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
     );
   }; 
 
-  
-
   const handleSimulate = (rowId: number, input: string) => {
     let status: TestRow["status"] = "No string";
-    if (input.length === 0) {
-      status = "No string";
-    } else {
-      let {isValid, path, info} = validateDfa({...dfaValues, word: input} )
-
-      console.log(isValid)
-      console.log(path)
-      console.log(info)
-
-      status = isValid ? "VALID" : "INVALID";
-    } 
+    if (input.length === 0) status = "No string";
+    else status = /^[A]+$/.test(input) ? "VALID" : "INVALID";
 
     setRows((prev) =>
       prev.map((r) => (r.id === rowId ? { ...r, status } : r))
@@ -232,7 +151,10 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
     return getDemoGraph(selectedRegex);
   }, [selectedRegex]);
 
-  
+  const {q0, sigma, delta, F } = useMemo(() => {
+      if (selectedRegex == 'regex2' && selectedModel='dfa'):
+      
+  }, [selectedRegex]);
 
   useEffect(() => {
     setRows((prev) =>
