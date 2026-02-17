@@ -1,0 +1,53 @@
+.state-circle {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid ##acacac;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease; /* Makes the highlight "fade" in smoothly */
+}
+
+.accept-state {
+    border: 4px double #333;
+}
+
+.highlighted {
+    border-color: #ff0072; /* A nice bright pink/red */
+    background-color: #ffeef6;
+    box-shadow: 0 0 15px rgba(255, 0, 114, 0.5);
+    transform: scale(1.1); /* Makes the active state slightly larger */
+}
+
+.horizontal-left {
+    left: 25% !important;
+    opacity: 0;
+}
+
+.horizontal-mid {
+    left: 50% !important;
+    opacity: 0;
+}
+
+.horizontal-right {
+    left: 75% !important;
+    opacity: 0;
+}
+
+.vertical-top {
+    top: 25% !important;
+    opacity: 0;
+}
+
+.vertical-mid {
+    top: 50% !important;
+    opacity: 0;
+}
+
+.vertical-bottom {
+    top: 75% !important;
+    opacity: 0;
+}
