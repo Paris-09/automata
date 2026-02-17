@@ -37,7 +37,6 @@ const defaultEdgeOptions = {
         type: MarkerType.ArrowClosed,
         color: "#333",
     },
-    type: 'smoothstep'
 };
 
 

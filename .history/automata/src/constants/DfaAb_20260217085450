@@ -1,0 +1,201 @@
+import type { Edge, Node } from "@xyflow/react";
+
+
+const createNode = (
+    id: string,
+    x: number,
+    y: number,
+    isAccept: boolean = false
+): Node => ({
+    id,
+    type: 'circle',
+    position: {x, y},
+    data: {
+        label: id,
+        ishighlighted: false,
+        isAcceptState: isAccept
+    }
+})
+
+export const dfa_ab_nodes: 
+
+const dfa_ab_nodes: Node[] = [
+    {
+        id: "q0",
+        type: "circle",
+        position: { x: 0, y: 0 },
+        data: {
+            label: "q0",
+            isHighlighted: false,
+            isAcceptState: false,
+        },
+    },
+
+    {
+        id: "q1",
+        type: "circle",
+        position: { x: 150, y: 0 },
+        data: {
+            label: "q1",
+            isHighlighted: false,
+            isAcceptState: false,
+        },
+    },
+
+    {
+        id: "q2",
+        type: "circle",
+        position: { x: 300, y: -200 },
+        data: {
+            label: "q2",
+            isHighlighted: false,
+            isAcceptState: false,
+        },
+    },
+    {
+        id: "q3",
+        type: "circle",
+        position: { x: 300, y: 200 },
+        data: {
+            label: "q3",
+            isHighlighted: false,
+            isAcceptState: false,
+        },
+    },
+
+    {
+        id: "q4",
+        type: "circle",
+        position: { x: 450, y: -200 },
+        data: {
+            label: "q4",
+            isHighlighted: false,
+            isAcceptState: false,
+        },
+    },
+    {
+        id: "q5",
+        type: "circle",
+        position: { x: 450, y: 0 },
+        data: {
+            label: "q5",
+            isHighlighted: false,
+            isAcceptState: false,
+        },
+    },
+    {
+        id: "q6",
+        type: "circle",
+        position: { x: 450, y: 200 },
+        data: {
+            label: "q6",
+            isHighlighted: false,
+            isAcceptState: false,
+        },
+    },
+
+    {
+        id: "q7",
+        type: "circle",
+        position: { x: 600, y: -200 },
+        data: {
+            label: "q7",
+            isHighlighted: false,
+            isAcceptState: false,
+        },
+    },
+    {
+        id: "q8",
+        type: "circle",
+        position: { x: 600, y: 0 },
+        data: {
+            label: "q8",
+            isHighlighted: false,
+            isAcceptState: false,
+        },
+    },
+
+    {
+        id: "q9",
+        type: "circle",
+        position: { x: 750, y: -200 },
+        data: {
+            label: "q9",
+            isHighlighted: false,
+            isAcceptState: false,
+        },
+    },
+    {
+        id: "q10",
+        type: "circle",
+        position: { x: 750, y: 200 },
+        data: {
+            label: "q10",
+            isHighlighted: false,
+            isAcceptState: false,
+        },
+    },
+
+    {
+        id: "q11",
+        type: "circle",
+        position: { x: 900, y: -200 },
+        data: {
+            label: "q11",
+            isHighlighted: false,
+            isAcceptState: false,
+        },
+    },
+    {
+        id: "q12",
+        type: "circle",
+        position: { x: 900, y: 0 },
+        data: {
+            label: "q12",
+            isHighlighted: false,
+            isAcceptState: false,
+        },
+    },
+    {
+        id: "q13",
+        type: "circle",
+        position: { x: 900, y: 200 },
+        data: {
+            label: "q13",
+            isHighlighted: false,
+            isAcceptState: false,
+        },
+    },
+
+    {
+        id: "q14",
+        type: "circle",
+        position: { x: 1050, y: 0 },
+        data: {
+            label: "q14",
+            isHighlighted: false,
+            isAcceptState: false,
+        },
+    },
+
+    {
+        id: "q15",
+        type: "circle",
+        position: { x: 1200, y: 0 },
+        data: {
+            label: "q15",
+            isHighlighted: false,
+            isAcceptState: true,
+        },
+    },
+    {
+        id: "q16",
+        type: "circle",
+        position: { x: 1200, y: 200 },
+        data: {
+            label: "q16",
+            isHighlighted: false,
+            isAcceptState: true,
+        },
+    },
+];

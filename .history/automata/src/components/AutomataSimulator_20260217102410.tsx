@@ -37,8 +37,8 @@ const defaultEdgeOptions = {
         type: MarkerType.ArrowClosed,
         color: "#333",
     },
-    type: 'smoothstep'
 };
+
 
 
 /**
@@ -84,6 +84,10 @@ function getDemoGraph(selectedRegex: RegexChoice) {
   
   return { nodes, edges };
 }
+
+
+
+
 
 
 export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate }: Props) {

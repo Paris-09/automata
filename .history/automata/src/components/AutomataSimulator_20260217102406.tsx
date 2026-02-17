@@ -37,8 +37,8 @@ const defaultEdgeOptions = {
         type: MarkerType.ArrowClosed,
         color: "#333",
     },
-    type: 'smoothstep'
 };
+
 
 
 /**
@@ -78,12 +78,16 @@ function getDemoGraph(selectedRegex: RegexChoice) {
 
     return { nodes, edges };
   }
-  // For regex2
+  // For regex 2
   const nodes = DfaAbNodes
   const edges = DfaAbEdges
   
   return { nodes, edges };
 }
+
+
+
+
 
 
 export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate }: Props) {
