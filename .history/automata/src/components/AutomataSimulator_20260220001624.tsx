@@ -155,11 +155,11 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
   );
 
   const dfaValues = useMemo(() => {
-    if (selectedRegex == 'regex2')  return DfaAbValues
-    if (selectedRegex == 'regex1') return Dfa01Values
-
-    // default value is Dfa01Values
-    return Dfa01Values
+    if (selectedRegex == 'regex2') {
+      return DfaAbValues
+    } else if (selectedRegex == 'regex1') {
+      return Dfa01Values
+    }
 
   }, [selectedRegex]);
 

@@ -7,8 +7,8 @@ import { ReactFlow, Background, BackgroundVariant, Controls, MarkerType, useReac
 import type { Edge, Node } from "@xyflow/react";
 
 import { CircleNode } from "./CircleNode";
-import { DfaAbNodes, Dfa01Nodes } from "../constants/DfaNodes"
-import { DfaAbEdges, Dfa01Edges } from "../constants/DfaEdges"
+import { DfaAbNodes } from "../constants/DfaAbNodes"
+import { DfaAbEdges } from "../constants/DfaEdges"
 
 import "@xyflow/react/dist/style.css";
 
@@ -54,8 +54,35 @@ const defaultEdgeOptions = {
  */
 function getDemoGraph(selectedRegex: RegexChoice) {
   if (selectedRegex === "regex1") {
-    const nodes = Dfa01Nodes
-    const edges = Dfa01Edges
+    const nodes: Node[] = [
+      {
+        id: "q0",
+        position: { x: 0, y: 150 },
+        data: { label: "q0" },
+        style: {
+          borderRadius: 999,
+          width: 60,
+          height: 60,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          background: "white",
+          border: "3px solid black",
+          fontWeight: 700,
+        },
+      },
+    ];
+
+    const edges: Edge[] = [
+      {
+        id: "q0-A-q0",
+        source: "q0",
+        target: "q0",
+        label: "A",
+        markerEnd: { type: MarkerType.ArrowClosed },
+        style: { strokeWidth: 2 },
+      },
+    ];
 
     return { nodes, edges };
   }
@@ -91,30 +118,6 @@ const DfaAbValues = {
   },
   F: new Set(['q15', 'q16'])
 }
-
-
-const Dfa01Values = {
-  q0: "q0",
-  sigma: new Set(['0','1']),
-  delta: {
-    'q0,0': 'q1', 'q0,1': 'q3',
-    'q1,0': 'q4', 'q1,1': 'q2',
-    'q2,0': 'q2', 'q2,1': 'q2',
-    'q3,0': 'q2', 'q3,1': 'q4',
-    'q4,0': 'q5', 'q4,1': 'q4',
-    'q5,0': 'q5', 'q5,1': 'q7',
-    'q6,0': 'q9', 'q6,1': 'q11',
-    'q7,0': 'q6', 'q7,1': 'q10',
-    'q8,0': 'q5', 'q8,1': 'q7',
-    'q9,0': 'q9', 'q9,1': 'q11',
-    'q10,0': 'q8', 'q10,1': 'q12',
-    'q11,0': 'q6', 'q11,1': 'q12',
-    'q12,0': 'q8', 'q12,1': 'q12',
-  },
-  F: new Set(['q8', 'q9', 'q11', 'q12'])
-}
-
-
 
 
 function validateDfa({q0, sigma, delta, F, word}: ValidateDfaProps){
@@ -155,11 +158,16 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
   );
 
   const dfaValues = useMemo(() => {
-    if (selectedRegex == 'regex2')  return DfaAbValues
-    if (selectedRegex == 'regex1') return Dfa01Values
+    if (selectedRegex == 'regex2') {
+      return DfaAbValues
+    };
 
-    // default value is Dfa01Values
-    return Dfa01Values
+    return {
+      q0: "q0",
+      sigma: new Set<string>(),
+      delta: {} as Record<string, string>,
+      F: new Set<string>()
+    };
 
   }, [selectedRegex]);
 

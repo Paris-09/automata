@@ -56,6 +56,35 @@ function getDemoGraph(selectedRegex: RegexChoice) {
   if (selectedRegex === "regex1") {
     const nodes = Dfa01Nodes
     const edges = Dfa01Edges
+    // const nodes: Node[] = [
+    //   {
+    //     id: "q0",
+    //     position: { x: 0, y: 150 },
+    //     data: { label: "q0" },
+    //     style: {
+    //       borderRadius: 999,
+    //       width: 60,
+    //       height: 60,
+    //       display: "flex",
+    //       justifyContent: "center",
+    //       alignItems: "center",
+    //       background: "white",
+    //       border: "3px solid black",
+    //       fontWeight: 700,
+    //     },
+    //   },
+    // ];
+
+    // const edges: Edge[] = [
+    //   {
+    //     id: "q0-A-q0",
+    //     source: "q0",
+    //     target: "q0",
+    //     label: "A",
+    //     markerEnd: { type: MarkerType.ArrowClosed },
+    //     style: { strokeWidth: 2 },
+    //   },
+    // ];
 
     return { nodes, edges };
   }
@@ -155,11 +184,11 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
   );
 
   const dfaValues = useMemo(() => {
-    if (selectedRegex == 'regex2')  return DfaAbValues
-    if (selectedRegex == 'regex1') return Dfa01Values
-
-    // default value is Dfa01Values
-    return Dfa01Values
+    if (selectedRegex == 'regex2') {
+      return DfaAbValues
+    } else if (selectedRegex == 'regex1') {
+      return Dfa01Values
+    }
 
   }, [selectedRegex]);
 

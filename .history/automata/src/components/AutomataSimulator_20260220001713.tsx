@@ -158,7 +158,7 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
     if (selectedRegex == 'regex2')  return DfaAbValues
     if (selectedRegex == 'regex1') return Dfa01Values
 
-    // default value is Dfa01Values
+    // default value is 01
     return Dfa01Values
 
   }, [selectedRegex]);

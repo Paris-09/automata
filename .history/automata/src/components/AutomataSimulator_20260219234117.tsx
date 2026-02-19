@@ -56,6 +56,35 @@ function getDemoGraph(selectedRegex: RegexChoice) {
   if (selectedRegex === "regex1") {
     const nodes = Dfa01Nodes
     const edges = Dfa01Edges
+    // const nodes: Node[] = [
+    //   {
+    //     id: "q0",
+    //     position: { x: 0, y: 150 },
+    //     data: { label: "q0" },
+    //     style: {
+    //       borderRadius: 999,
+    //       width: 60,
+    //       height: 60,
+    //       display: "flex",
+    //       justifyContent: "center",
+    //       alignItems: "center",
+    //       background: "white",
+    //       border: "3px solid black",
+    //       fontWeight: 700,
+    //     },
+    //   },
+    // ];
+
+    // const edges: Edge[] = [
+    //   {
+    //     id: "q0-A-q0",
+    //     source: "q0",
+    //     target: "q0",
+    //     label: "A",
+    //     markerEnd: { type: MarkerType.ArrowClosed },
+    //     style: { strokeWidth: 2 },
+    //   },
+    // ];
 
     return { nodes, edges };
   }
@@ -97,21 +126,25 @@ const Dfa01Values = {
   q0: "q0",
   sigma: new Set(['0','1']),
   delta: {
-    'q0,0': 'q1', 'q0,1': 'q3',
-    'q1,0': 'q4', 'q1,1': 'q2',
-    'q2,0': 'q2', 'q2,1': 'q2',
-    'q3,0': 'q2', 'q3,1': 'q4',
-    'q4,0': 'q5', 'q4,1': 'q4',
-    'q5,0': 'q5', 'q5,1': 'q7',
-    'q6,0': 'q9', 'q6,1': 'q11',
-    'q7,0': 'q6', 'q7,1': 'q10',
-    'q8,0': 'q5', 'q8,1': 'q7',
-    'q9,0': 'q9', 'q9,1': 'q11',
-    'q10,0': 'q8', 'q10,1': 'q12',
-    'q11,0': 'q6', 'q11,1': 'q12',
-    'q12,0': 'q8', 'q12,1': 'q12',
+    'q0,a': 'q1', 'q0,b': 'q1',
+    'q1,a': 'q2', 'q1,b': 'q3',
+    'q2,a': 'q4', 'q2,b': 'q3',
+    'q3,a': 'q2', 'q3,b': 'q6',
+    'q4,a': 'q7', 'q4,b': 'q5',
+    'q5,a': 'q9', 'q5,b': 'q6',
+    'q6,a': 'q8', 'q6,b': 'q10',
+    'q7,a': 'q7', 'q7,b': 'q9',
+    'q8,a': 'q4', 'q8,b': 'q9',
+    'q9,a': 'q11', 'q9,b': 'q12',
+    'q10,a': 'q9', 'q10,b': 'q10',
+    'q11,a': 'q11', 'q11,b': 'q14',
+    'q12,a': 'q13', 'q12,b': 'q12',
+    'q13,a': 'q16', 'q13,b': 'q14',
+    'q14,a': 'q15', 'q14,b': 'q12',
+    'q15,a': 'q16', 'q15,b': 'q14',
+    'q16,a': 'q11', 'q16,b': 'q14',
   },
-  F: new Set(['q8', 'q9', 'q11', 'q12'])
+  F: new Set(['q8', 'q9', 'q'])
 }
 
 
@@ -155,11 +188,16 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
   );
 
   const dfaValues = useMemo(() => {
-    if (selectedRegex == 'regex2')  return DfaAbValues
-    if (selectedRegex == 'regex1') return Dfa01Values
+    if (selectedRegex == 'regex2') {
+      return DfaAbValues
+    };
 
-    // default value is Dfa01Values
-    return Dfa01Values
+    return {
+      q0: "q0",
+      sigma: new Set<string>(),
+      delta: {} as Record<string, string>,
+      F: new Set<string>()
+    };
 
   }, [selectedRegex]);
 
