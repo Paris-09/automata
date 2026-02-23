@@ -56,7 +56,7 @@ function Home() {
             <div style={{ width: '100vw', height: '100%', display: 'block' }}>
               <LetterGlitch
                 key="hero-glitch" 
-                glitchColors={["#1c1c1c", "#212121", "#1a1a1a"]}
+                glitchColors={["#74dcff3a", "#272727", "#212121"]}
                 glitchSpeed={50}
                 centerVignette
                 outerVignette={false}
