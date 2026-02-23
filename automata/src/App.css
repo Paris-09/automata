@@ -5,6 +5,16 @@
   text-align: center;
 }
 
+::selection {
+  background-color: #74dcff;
+  color: black;
+}
+input::selection,
+textarea::selection {
+  background-color: black;
+  color: white;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
