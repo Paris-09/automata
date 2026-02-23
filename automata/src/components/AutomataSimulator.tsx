@@ -17,7 +17,7 @@ type RegexChoice = "regex1" | "regex2";
 interface TestRow {
   id: number;
   input: string;
-  status: "VALID" | "INVALID" | "READY" | "No string";
+  status: "VALID" | "INVALID" | "READY" | "No string" | "PROCESSING";
 }
 
 type Props = {
@@ -201,6 +201,12 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
     if (input.length === 0) {
       status = "No string";
     } else {
+
+      setRows((prev) =>
+        prev.map((r) =>
+          r.id === rowId ? { ...r, status: "PROCESSING" } : r
+        )
+      );
       let {isValid, path, info} = validateDfa({...dfaValues, word: input} )
 
       // For debugging purposes
@@ -376,13 +382,13 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
                   className="bg-gray-100 border-none rounded-none h-10 placeholder:text-gray-400 focus-visible:ring-1 focus-visible:ring-gray-300"
                 />
                 <span className={`text-[12px] font-bold tracking-tight truncate ${
-                  row.status === "VALID" ? "text-green-600" : row.status === "INVALID" ? "text-red-600" : row.status === "READY" ? "text-yellow-600" : "text-gray-300"
+                  row.status === "VALID" ? "text-green-600" : row.status === "INVALID" ? "text-red-600" : row.status === "READY" ? "text-yellow-600" : row.status === "PROCESSING" ? "processing-pulse" : "text-gray-300"
                 }`}>
                   {row.status === "No string" ? "NO STRING" : row.status}
                 </span>
                 <Button
                   variant="secondary"
-                  disabled={row.input === ""}
+                  disabled={row.input === "" || row.status === "PROCESSING"}
                   onClick={() => handleSimulate(row.id, row.input)}
                   className="text-s bg-[#1a1a1a] text-white hover:bg-[#74DCFF] hover:text-black rounded-lg h-10 shadow-sm cursor-pointer transition-all disabled:opacity-20"
                 >
