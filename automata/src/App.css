@@ -37,6 +37,19 @@ textarea::selection {
   }
 }
 
+@keyframes processingPulse {
+  0%, 100% {
+    color: #3b82f6;
+  }
+  50% {
+    color: #74dcff;
+  }
+}
+
+.processing-pulse {
+  animation: processingPulse 1.2s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
