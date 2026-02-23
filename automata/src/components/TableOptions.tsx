@@ -104,7 +104,7 @@ export function TableOptions({
               </p>
 
               <div className="space-y-5">
-                <label className="w-full h-[85px] mb-6 flex items-center gap-4 bg-[#1a1a1a] text-white hover:bg-[#74DCFF] hover:text-black rounded-lg px-6 py-3 shadow-sm cursor-pointer transition-colors border-2 border-transparent hover:border-[#74DCFF]">
+                <label className="w-full h-[85px] mb-7 flex items-center gap-4 bg-[#1a1a1a] text-white hover:bg-[#74DCFF] hover:text-black rounded-lg px-6 py-3 shadow-sm cursor-pointer transition-colors border-2 border-transparent hover:border-[#74DCFF]">
                   <input
                     type="radio"
                     name="regex"
@@ -140,7 +140,7 @@ export function TableOptions({
             <TableCell className="w-[24%] border-t p-6 lg:p-8 align-top text-left whitespace-normal break-words">
               <h2 className="text-lg font-semibold mb-4">Models of Computation</h2>
               <p className="text-sm text-muted-foreground leading-relaxed mb-12">
-                Choose the computational model to evaluate the string logic.
+                Choose the computational model to evaluate the string logic and behavior accurately.
               </p>
 
               <div className="space-y-5">
