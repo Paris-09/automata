@@ -356,10 +356,28 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
         </h2>
         <button
           onClick={() => handleNavigate("selector")} // Go to selector
-          className="p-1 rounded-full hover:bg-gray-100 transition-all duration-200 group-hover:-translate-y-1 cursor-pointer"
-          aria-label="Scroll to Selector"
+          className="p-1 rounded-full cursor-pointer relative overflow-hidden hover:bg-gray-200"
+          aria-label="Scroll to Configuration"
         >
-          <ChevronUp size={28} className="text-[#74DCFF]" strokeWidth={3} />
+          <ChevronUp
+            size={28}
+            className="text-[#74DCFF] stroke-[4]"
+            style={{
+              animation: 'bounce 0.3s ease-in-out infinite alternate',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.animation = 'none')}
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.animation = 'bounce 0.3s ease-in-out infinite alternate')
+            }
+          />
+          <style>
+            {`
+              @keyframes bounce {
+                0% { transform: translateY(0); }
+                100% { transform: translateY(4px); }
+              }
+            `}
+          </style>
         </button>
       </div>
 
