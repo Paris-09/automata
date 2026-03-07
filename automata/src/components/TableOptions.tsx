@@ -34,7 +34,7 @@ export function TableOptions({
             A <strong>Deterministic Finite Automaton (DFA)</strong> is a finite-state machine that accepts or rejects strings of symbols. It is "deterministic" because for every state and input symbol, there is exactly one transition to a next state.
           </p>
           <p className="mt-4 leading-7">
-            It is formally defined by the 5-tuple $M = (Q, \Sigma, \delta, q_0, F)$. DFAs are the primary models for <strong>Regular Languages</strong> and are used extensively in lexical analysis.
+            It is formally defined by the 5-tuple 𝑀=(𝑄, Σ, 𝛿, 𝑞0, 𝐹). DFAs are the primary models for <strong>Regular Languages</strong> and are used extensively in lexical analysis.
           </p>
           <p className="mt-4 leading-7 text-muted-foreground italic">
             Commonly applied in simple pattern matching, search algorithms, and the control logic of vending machines or traffic lights.
@@ -50,7 +50,7 @@ export function TableOptions({
             A <strong>Context-Free Grammar (CFG)</strong> is a formal grammar used to generate all possible strings in a given formal language. It describes the structure of sentences in a language by using recursive substitution rules.
           </p>
           <p className="mt-4 leading-7">
-            A CFG is defined by $G = (V, \Sigma, R, S)$. They are more powerful than Regular Expressions and are essential for describing <strong>Programming Languages</strong> and nested structures like HTML or JSON.
+            A CFG is formally defined as 𝐺=(𝑉, Σ, 𝑅, 𝑆). They are more powerful than Regular Expressions and are essential for describing <strong>Programming Languages</strong> and nested structures like HTML or JSON.
           </p>
           <p className="mt-4 leading-7 text-muted-foreground italic">
             CFGs form the basis of most modern compilers and parsers, enabling machines to understand the nested syntax of code.
@@ -66,7 +66,7 @@ export function TableOptions({
             A <strong>Pushdown Automaton (PDA)</strong> is essentially a Finite Automaton with an added <strong>stack</strong> for memory. This stack allows it to "remember" an infinite amount of information in a Last-In, First-Out (LIFO) manner.
           </p>
           <p className="mt-4 leading-7">
-            Formally defined by $M = (Q, \Sigma, \Gamma, \delta, q_0, Z_0, F)$. PDAs are the machines that recognize <strong>Context-Free Languages</strong>, allowing them to solve problems DFAs cannot, such as matching parentheses.
+            It is formally defined by the 7-tuple 𝑀=(𝑄, Σ, Γ, 𝛿, 𝑞0, 𝑍0, 𝐹). PDAs are the machines that recognize <strong>Context-Free Languages</strong>, allowing them to solve problems DFAs cannot, such as matching parentheses.
           </p>
           <p className="mt-4 leading-7 text-muted-foreground italic">
             By utilizing a stack, PDAs can track balance and symmetry, making them capable of parsing mathematical expressions and balanced delimiters.
@@ -87,17 +87,35 @@ export function TableOptions({
   
   <button
     onClick={() => handleNavigate("configuration")}
-    className="p-1 rounded-full hover:bg-gray-100 transition-colors duration-200 group-hover:translate-y-1 transition-transform cursor-pointer"
+    className="p-1 rounded-full cursor-pointer relative overflow-hidden hover:bg-gray-200"
     aria-label="Scroll to Configuration"
   >
-    <ChevronDown size={28} className="text-[#74DCFF]" strokeWidth={3} />
+    <ChevronDown
+      size={28}
+      className="text-[#74DCFF] stroke-[4]"
+      style={{
+        animation: 'bounce 0.3s ease-in-out infinite alternate',
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.animation = 'none')}
+      onMouseLeave={(e) =>
+        (e.currentTarget.style.animation = 'bounce 0.3s ease-in-out infinite alternate')
+      }
+    />
+    <style>
+      {`
+        @keyframes bounce {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(4px); }
+        }
+      `}
+    </style>
   </button>
 </div>
       <Table className="table-fixed w-full border-collapse border-none">
         <TableBody>
           <TableRow className="align-top text-left border-none hover:bg-transparent">
             {/* Column 1: Regex */}
-            <TableCell className="w-[20%] border-t border-r p-6 lg:p-8 !pl-0 align-top text-left whitespace-normal break-words">
+            <TableCell className="w-[21%] border-t border-r p-6 lg:p-8 !pl-0 align-top text-left whitespace-normal break-words">
               <h2 className="text-lg font-semibold mb-4">Regular Expressions</h2>
               <p className="text-sm text-muted-foreground leading-relaxed mb-12">
                 Select a regular expression to see how it translates to the chosen model.
@@ -114,7 +132,8 @@ export function TableOptions({
                     className="mt-1 h-5 w-5 shrink-0 accent-[#74DCFF] cursor-pointer"
                   />
                   <span className="text-sm font-mono break-all leading-tight">
-                    (11+00)(1+0)* (101+111+01) <br />
+                    (11+00) (1+0)* (101+111+01)
+                    <span className="block h-1.5"></span>
                     (00*+11*) (1+0+11)
                   </span>
                 </label>
@@ -129,7 +148,8 @@ export function TableOptions({
                     className="mt-1 h-5 w-5 shrink-0 accent-[#74DCFF] cursor-pointer"
                   />
                   <span className="text-sm font-mono break-all leading-tight">
-                    (a+b)(a+b)* (aa+bb) (ab+ba) <br />
+                    (a+b) (a+b)* (aa+bb) (ab+ba)
+                    <span className="block h-1.5"></span>
                     (a+b)* (aba+baa)
                   </span>
                 </label>
