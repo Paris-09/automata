@@ -52,6 +52,6 @@ export const DfaAbNodes: Node[] = [
     createNode('q12', 900, 0),
     createNode('q13', 900, 200),
     createNode('q14', 1050, 0),
-    createNode('q15', 1200, 0, true, "+"),
-    createNode('q16', 1200, 200, true, "+"),
+    createNode('q15', 1200, 0, true),
+    createNode('q16', 1200, 200, true),
 ]

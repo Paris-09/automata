@@ -8,7 +8,7 @@ import { ReactFlow, Background, BackgroundVariant, Controls, MarkerType, useReac
 import { CircleNode } from "./CircleNode";
 import { DfaAbNodes, Dfa01Nodes } from "../constants/DfaNodes"
 import { DfaAbEdges, Dfa01Edges } from "../constants/DfaEdges"
-import { cfgEngine01, cfgEngineAB } from "@/lib/CFGEngine";
+import {}
 
 import "@xyflow/react/dist/style.css";
 
@@ -194,10 +194,7 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
     );
   }; 
 
-  // Animation Delay
   const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-  // Main Simulation Function
   const handleSimulate = async (rowId: number, input: string) => {
     const currentSimId = ++simulationRef.current;
     let status: TestRow["status"] = "No string";
@@ -206,7 +203,6 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
       status = "No string";
     } else {
 
-      // Set the status to processing
       setRows((prev) =>
         prev.map((r) =>
           r.id === rowId ? { ...r, status: "PROCESSING" } : r

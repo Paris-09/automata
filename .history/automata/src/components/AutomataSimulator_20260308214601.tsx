@@ -206,7 +206,6 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
       status = "No string";
     } else {
 
-      // Set the status to processing
       setRows((prev) =>
         prev.map((r) =>
           r.id === rowId ? { ...r, status: "PROCESSING" } : r

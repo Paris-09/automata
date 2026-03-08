@@ -29,15 +29,15 @@ export const Dfa01Nodes: Node[] = [
     createNode('q5', 450, 0),
     createNode('q6', 600, -200),
     createNode('q7', 600, 0),
-    createNode('q8', 600, 200, true, "+"),
-    createNode('q9', 750, -100, true, "+"),
+    createNode('q8', 600, 200, true),
+    createNode('q9', 750, -100, true),
     createNode('q10', 750, 100),
-    createNode('q11', 900, -200, true, "+"),
-    createNode('q12', 900, 200, true, "+"),
+    createNode('q11', 900, -200, true),
+    createNode('q12', 900, 200, true),
 ]
 
 export const DfaAbNodes: Node[] = [
-    createNode('q0', 0, 0, false, "-"),
+    createNode('q0', 0, 0),
     createNode('q1', 150, 0),
     createNode('q2', 300, -200),
     createNode('q3', 300, 200),
@@ -52,6 +52,6 @@ export const DfaAbNodes: Node[] = [
     createNode('q12', 900, 0),
     createNode('q13', 900, 200),
     createNode('q14', 1050, 0),
-    createNode('q15', 1200, 0, true, "+"),
-    createNode('q16', 1200, 200, true, "+"),
+    createNode('q15', 1200, 0, true),
+    createNode('q16', 1200, 200, true),
 ]
