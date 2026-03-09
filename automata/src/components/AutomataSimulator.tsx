@@ -1,16 +1,22 @@
-import React, { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ChevronUp } from "lucide-react"; 
 
-import { ReactFlow, Background, BackgroundVariant, Controls, MarkerType, useReactFlow, useNodesState, useEdgesState } from "@xyflow/react";
+// Graph Imports
+import { ReactFlow, Background, BackgroundVariant, Controls, useReactFlow, useNodesState, useEdgesState } from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
 
+// DFA Imports
 import { CircleNode } from "./CircleNode";
 import { DfaAbNodes, Dfa01Nodes } from "../constants/DfaNodes"
 import { DfaAbEdges, Dfa01Edges } from "../constants/DfaEdges"
-import { cfgEngine01, cfgEngineAB } from "@/lib/CFGEngine";
+import { DfaAbConfig, Dfa01Config } from "@/constants/DfaConfig";
+import { cfgEngine01, cfgEngineAB, type TraceStep } from "../lib/CfgEngine";
 
-import "@xyflow/react/dist/style.css";
+// CFG Imports
+import { CfgVisualizer } from "./CfgVisualizer";
+import { Cfg01Grammar, CfgABGrammar } from "../constants/CfgGrammars";
 
 type ModelType = "dfa" | "cfg" | "pda";
 type RegexChoice = "regex1" | "regex2";
@@ -57,54 +63,6 @@ function getDemoGraph(selectedRegex: RegexChoice) {
   return { nodes, edges };
 }
 
-
-const DfaAbValues = {
-  q0: "q0",
-  sigma: new Set(['a','b']),
-  delta: {
-    'q0,a': 'q1', 'q0,b': 'q1',
-    'q1,a': 'q2', 'q1,b': 'q3',
-    'q2,a': 'q4', 'q2,b': 'q3',
-    'q3,a': 'q2', 'q3,b': 'q6',
-    'q4,a': 'q7', 'q4,b': 'q5',
-    'q5,a': 'q9', 'q5,b': 'q6',
-    'q6,a': 'q8', 'q6,b': 'q10',
-    'q7,a': 'q7', 'q7,b': 'q9',
-    'q8,a': 'q4', 'q8,b': 'q9',
-    'q9,a': 'q11', 'q9,b': 'q12',
-    'q10,a': 'q9', 'q10,b': 'q10',
-    'q11,a': 'q11', 'q11,b': 'q14',
-    'q12,a': 'q13', 'q12,b': 'q12',
-    'q13,a': 'q16', 'q13,b': 'q14',
-    'q14,a': 'q15', 'q14,b': 'q12',
-    'q15,a': 'q16', 'q15,b': 'q14',
-    'q16,a': 'q11', 'q16,b': 'q14',
-  },
-  F: new Set(['q15', 'q16'])
-}
-
-const Dfa01Values = {
-  q0: "q0",
-  sigma: new Set(['0','1']),
-  delta: {
-    'q0,0': 'q1', 'q0,1': 'q3',
-    'q1,0': 'q4', 'q1,1': 'q2',
-    'q2,0': 'q2', 'q2,1': 'q2',
-    'q3,0': 'q2', 'q3,1': 'q4',
-    'q4,0': 'q5', 'q4,1': 'q4',
-    'q5,0': 'q5', 'q5,1': 'q7',
-    'q6,0': 'q9', 'q6,1': 'q11',
-    'q7,0': 'q6', 'q7,1': 'q10',
-    'q8,0': 'q5', 'q8,1': 'q7',
-    'q9,0': 'q9', 'q9,1': 'q11',
-    'q10,0': 'q8', 'q10,1': 'q12',
-    'q11,0': 'q6', 'q11,1': 'q12',
-    'q12,0': 'q8', 'q12,1': 'q12',
-  },
-  F: new Set(['q8', 'q9', 'q11', 'q12'])
-}
-
-
 function validateDfa({q0, sigma, delta, F, word}: ValidateDfaProps){
   console.log("i got this values", q0, sigma, delta, F, word)
   let q = q0
@@ -130,9 +88,17 @@ function validateDfa({q0, sigma, delta, F, word}: ValidateDfaProps){
 
 // Simulate the Automata 
 export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate }: Props) {
+  // DFA States
   const initialGraph = useMemo(() => getDemoGraph(selectedRegex), [selectedRegex]);
   const [displayNodes, setNodes, onNodesChange] = useNodesState(initialGraph.nodes)
   const [displayEdges, setEdges, onEdgesChange] = useEdgesState(initialGraph.edges)
+
+  // CFG States
+  const [cfgSteps, setCfgSteps] = useState<TraceStep[]>([]);
+  const [currentStep, setCurrentStep] = useState(-1);
+  const [cfgError, setCfgError] = useState<string | null>(null);
+
+  // Cancel State
   const simulationRef = useRef<number>(0)
 
   // Keep the state (node, edge) sync in case of regex changes
@@ -153,10 +119,10 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
 
   // Dfa Values based on the selected Regex
   const dfaValues = useMemo(() => {
-    if (selectedRegex == 'regex2')  return DfaAbValues
-    if (selectedRegex == 'regex1') return Dfa01Values
+    if (selectedRegex == 'regex2')  return DfaAbConfig
+    if (selectedRegex == 'regex1') return Dfa01Config
 
-    return Dfa01Values
+    return Dfa01Config
 
   }, [selectedRegex]);
 
@@ -176,7 +142,7 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
     }, 50);
 
     return () => clearTimeout(timer);
-  }, [selectedRegex, fitView])
+  }, [selectedRegex, selectedModel, fitView])
 
 
   const handleInputChange = (id: number, value: string) => {
@@ -206,124 +172,151 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
       status = "No string";
     } else {
 
-      // Set the status to processing
+      // Set the status to processing (and reset old processing status)
       setRows((prev) =>
-        prev.map((r) =>
-          r.id === rowId ? { ...r, status: "PROCESSING" } : r
+        prev.map((r) => {
+          if (r.status === "PROCESSING") return { ...r, status: r.input.length === 0 ? "No string" : "READY" };
+          if (r.id === rowId) return { ...r, status: "PROCESSING" };
+          return r;
+        }
         )
       );
-      let {isValid, path, info} = validateDfa({...dfaValues, word: input} )
 
-      // For debugging purposes
-      console.log(isValid)
-      console.log(path)
-      console.log(info)
 
-      // Clear Previous Node State
-      setNodes((nds) => nds.map((n) => ({
-        ...n,
-        data: {
-          ...n.data,
-          isHighlighting: false,
-          isHighlighted: false,
-          isValid: null,
-        }
-      })))
-
-      setEdges((dgs) => dgs.map((d) => ({
-        ...d,
-        animated: false,
-        style: {...d.style, stroke: '#57565657', strokeWidth: 3}
-      })))
-
-      // Highlight the starting state
-      setNodes((nds) => nds.map((n) =>
-        n.id === dfaValues.q0 ? { ...n, data: {...n.data, isHighlighting: true}} : n
-      ))
-
-      await sleep(400)
-      // if the simulation id changes, cancel the simulation
-      if (currentSimId != simulationRef.current) return;
-
-      // Start Traversal
-      for (const edgePath of path) {
-        const sourceId = edgePath.split('-')[0];
-        const targetId = edgePath.split('-')[2];
-
-        // find the edge connecting source to target
-        const edgeToAnimate = displayEdges.find(e => e.source === sourceId && e.target === targetId);
+      if (selectedModel == 'dfa') {
+        let {isValid, path} = validateDfa({...dfaValues, word: input} )
         
-        // Animate the edge
-        if (edgeToAnimate) {
-          setEdges((dgs) => dgs.map((e) => 
-            e.id === edgeToAnimate.id
-              ? {...e, animated: true, style: { ...e.style, stroke: '#74DCFF', strokeWidth: 5 } }
-              : e
+        // --- Clear Previous Node/Edge State ---
+        setNodes((nds) => nds.map((n) => ({
+          ...n,
+          data: {
+            ...n.data,
+            isHighlighting: false,
+            isHighlighted: false,
+            isValid: null,
+          }
+        })))
+        setEdges((dgs) => dgs.map((d) => ({
+          ...d,
+          animated: false,
+          style: {...d.style, stroke: '#57565657', strokeWidth: 3}
+        })))
+
+        // --- Highlight the starting state ---
+        setNodes((nds) => nds.map((n) =>
+          n.id === dfaValues.q0 ? { ...n, data: {...n.data, isHighlighting: true}} : n
+        ))
+
+        await sleep(400)
+        // if the simulation id changes, cancel the simulation
+        if (currentSimId != simulationRef.current) return;
+
+        // --- Start Traversal ---
+        for (const edgePath of path) {
+          const sourceId = edgePath.split('-')[0];
+          const targetId = edgePath.split('-')[2];
+
+          // Animate the edge
+          const edgeToAnimate = displayEdges.find(e => e.source === sourceId && e.target === targetId);
+          if (edgeToAnimate) {
+            setEdges((dgs) => dgs.map((e) => 
+              e.id === edgeToAnimate.id
+                ? {...e, animated: true, style: { ...e.style, stroke: '#74DCFF', strokeWidth: 5 } }
+                : e
+            ));
+          }
+
+          await sleep(250);
+          // If the simulation id change, cancel the simulation
+          if (currentSimId != simulationRef.current) return;
+
+          // Update Nodes (Old Nodes -> isHighlighted, Target Nodes -> isHighlighting)
+          setNodes((nds) => nds.map((n) => {
+            if (n.id === targetId) {
+              return { ...n, data: { ...n.data,   isHighlighting: true, isHighlighted: false } }
+            }
+            if (n.id === sourceId){
+              return { ...n, data: { ...n.data, isHighlighting: false, isHighlighted: true } }
+            }
+            return n
+          }));
+
+          await sleep(100)
+          // If the simulation id change, cancel the simulation
+          if (currentSimId != simulationRef.current) return;
+
+          // Stop edge pulse, but keep the color
+          if (edgeToAnimate) {
+            setEdges((dgs) => dgs.map((e) => 
+              e.id === edgeToAnimate.id ? { ...e, animated: false, style: {...e.style, stroke: '#3b82f6'}} : e
+            ))
+          }
+
+          await sleep(100)
+          // If the simulation id change, cancel the simulation
+          if (currentSimId != simulationRef.current) return;
+        }
+
+        // Set isValid state
+        const lastNodeId = path.length > 0 ? (path[path.length - 1]).split('-')[2] : dfaValues.q0
+        if (isValid) {
+          setNodes((nds) => nds.map((n) => 
+            n.id === lastNodeId
+            ? {...n, data: {...n.data, isHighlighting: false, isValid: true}}
+            : n
+          ));
+        } else {
+          setNodes((nds) => nds.map((n) => 
+            n.id === lastNodeId
+            ? {...n, data: {...n.data, isHighlighting: false, isValid: false}}
+            : n
           ));
         }
 
-        await sleep(250);
-        // If the simulation id change, cancel the simulation
-        if (currentSimId != simulationRef.current) return;
+        status = isValid ? "VALID" : "INVALID";
+      } else if (selectedModel == 'cfg') {
+        // Reset CFG States
+        setCfgSteps([]);
+        setCurrentStep(-1);
+        setCfgError(null);
 
-        // Update Nodes (Old Nodes -> isHighlighted, Target Nodes -> isHighlighting)
-        setNodes((nds) => nds.map((n) => {
+        const engine = selectedRegex == 'regex1' ? cfgEngine01 : cfgEngineAB
+        const result = engine.trace(input)
+
+        if (result.success) {
+          setCfgSteps(result.steps ?? []);
           
-          if (n.id === targetId) {
-            return { ...n, data: { ...n.data, isHighlighting: true } }
+          // --- Animate Loop ---
+          const steps = result.steps ?? [];
+          for (let i = 0; i < steps.length; i++) {
+            setCurrentStep(i);
+            await sleep(500);
+
+            // Allow cancellation mid-animation
+            if (currentSimId != simulationRef.current) return;
           }
-
-          if (n.id === sourceId){
-            return { ...n, data: { ...n.data, isHighlighting: false, isHighlighted: true } }
-          }
-
-          return n
-
-        }));
-
-        // Stop edge pulse, but keep the color
-        if (edgeToAnimate) {
-          setEdges((dgs) => dgs.map((e) => 
-            e.id === edgeToAnimate.id ? { ...e, animated: false, style: {...e.style, stroke: '#3b82f6'}} : e
-          ))
+          status = "VALID";
+        } else {
+          setCfgError(result.error || "String rejected by grammar.");
+          status = "INVALID";
         }
-
-        await sleep(150)
-        // If the simulation id change, cancel the simulation
-        if (currentSimId != simulationRef.current) return;
       }
-
-      // If the simulation id change, cancel the simulation
-      if (currentSimId != simulationRef.current) return;
-
-      const lastNodeId = path.length > 0 ? (path[path.length - 1]).split('-')[2] : dfaValues.q0
-
-      // Set isValid state
-      if (isValid) {
-        setNodes((nds) => nds.map((n) => 
-          n.id === lastNodeId
-          ? {...n, data: {...n.data, isHighlighting: false, isValid: true}}
-          : n
-        ));
-      } else {
-        setNodes((nds) => nds.map((n) => 
-          n.id === lastNodeId
-          ? {...n, data: {...n.data, isHighlighting: false, isValid: false}}
-          : n
-        ));
-      }
-      status = isValid ? "VALID" : "INVALID";
-
     } 
-    setRows((prev) =>
-      prev.map((r) => (r.id === rowId ? { ...r, status } : r))
-    );
+
+    // Update the status (only if it wasn't interrupted)
+    if (currentSimId === simulationRef.current) {
+      setRows((prev) =>
+        prev.map((r) => (r.id === rowId ? { ...r, status } : r))
+      );
+    }
+    
   };
 
-  // Reset graph when changing regex and model
+  // --- Reset graph when changing regex and model ---
   useEffect(() => {
     simulationRef.current++
 
+    // Reset DFA Graph 
     setNodes((nds) => nds.map((n) => ({
         ...n,
         data: {
@@ -339,6 +332,11 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
         animated: false,
         style: {...d.style, stroke: '#57565657', strokeWidth: 3}
       })))
+
+      // Reset CFG States 
+      setCfgSteps([]);
+      setCurrentStep(-1);
+      setCfgError(null);
 
   }, [selectedRegex, selectedModel])
 
@@ -360,7 +358,7 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
           Regex & Automata Configuration
         </h2>
         <button
-          onClick={() => handleNavigate("selector")} // Go to selector
+          onClick={() => handleNavigate("selector")}
           className="p-1 rounded-full cursor-pointer relative overflow-hidden hover:bg-gray-200"
           aria-label="Scroll to Configuration"
         >
@@ -426,13 +424,7 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
         <div className="min-w-0">
           <span className="font-semibold text-md tracking-wider block mb-6 text-left text-gray-400">Transition Diagram</span>
           <div className="w-full h-[580px] bg-[#D9D9D9] border border-gray-200 overflow-hidden">
-            {selectedModel !== "dfa" ? (
-              <div className="w-full h-full flex items-center justify-center">
-                <p className="text-lg text-black font-normal tracking-tight text-center px-4">
-                  Graph rendering for {selectedModel.toUpperCase()} will be implemented soon...
-                </p>
-              </div>
-            ) : (
+            {selectedModel === "dfa" ? (
               <ReactFlow 
                 nodes={displayNodes}
                 nodeTypes = {nodeTypes}
@@ -454,6 +446,20 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
                 />
                 <Controls />
               </ReactFlow>
+            ) : (selectedModel === "cfg") ? (
+              <CfgVisualizer
+                steps={cfgSteps}
+                grammarFormal={selectedRegex === "regex1" ? Cfg01Grammar.formal : CfgABGrammar.formal}
+                currentStepIndex={currentStep}
+                errorMsg={cfgError}
+                isSimulationComplete={status === "VALID" || (currentStep === cfgSteps.length - 1 && !cfgError)}
+              />
+            ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                <p className="text-lg text-black font-normal tracking-tight text-center px-4">
+                  Graph rendering for {selectedModel.toUpperCase()} will be implemented soon...
+                </p>
+              </div>
             )}
           </div>
         </div>
