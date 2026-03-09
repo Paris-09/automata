@@ -44,7 +44,7 @@ class CfgEngine {
             currentBlockTerminals: string,
         ) : { success: boolean; finalPath: TraceStep[] } | null => {
             
-            // If there's no longer remaining input by the time we reach ACCEPT, then the string is valid (return validation, and path)
+            // Base Case
             if (currentState === "ACCEPT") {
                 return remainingInput === "" ? {success: true, finalPath: path} : null;
             }
@@ -53,30 +53,22 @@ class CfgEngine {
             // Sorts the rules to avoid greedy matching
             const sortedRules = [...rules].sort((a, b) => b[0].length - a[0].length);
 
-            // Then try each rule
             for (const [ terminal, nextState ] of sortedRules) {
-                
+
                 // Valid if the terminal matches beggining of the input, or if the terminal is epsilon
                 if (terminal === "" || remainingInput.startsWith(terminal)) {
-                    
                     
                     const currentBlock = this.stateToBlock[currentState];
                     const nextBlock = this.stateToBlock[nextState] || "ACCEPT";
 
-
-                    // Detect Block Transition
+                    // Block Transition
                     const isTransitioning = currentBlock !== nextBlock;
-                    // Update Block Index (if transitioning)
                     const nextBlockIndex = isTransitioning ? blockIndex + 1 : blockIndex;
-                    // Updated Completed Prefix (if transitioning)
                     const nextCompletedPrefix = isTransitioning ? completedPrefix + currentBlockTerminals + terminal : completedPrefix;
-                    // Reset Block Terminals (if transitioning, else update it)
                     const nextBlockTerminals = isTransitioning ? "" : currentBlockTerminals + terminal;
                     
                     // Removed matched Terminal
                     const nextRemainingInput = remainingInput.slice(terminal.length);
-
-
 
                     // --- Formatting the Pieces ---
                     const processedString = nextCompletedPrefix;
@@ -104,11 +96,8 @@ class CfgEngine {
                         nextCompletedPrefix,
                         nextBlockTerminals
                     );
-
                     if (result) return result;
-
                 }
-
             }
 
             return null;
@@ -151,62 +140,12 @@ class CfgEngine {
     }
 }
 
-
-
+// --- 01 CFG ---
 const cfgEngine01Value = Cfg01Grammar.engine 
 export const cfgEngine01 = new CfgEngine(cfgEngine01Value.rules, cfgEngine01Value.sequence, cfgEngine01Value.stateToBlock)
 
 // --- AB CFG ---
 const cfgEngineABValue = CfgABGrammar.engine 
 export const cfgEngineAB = new CfgEngine(cfgEngineABValue.rules, cfgEngineABValue.sequence, cfgEngineABValue.stateToBlock);
-
-// --- 01 CFG ---
-// export const cfg01Rules = {
-//     "A": [["11", "B"], ["00", "B"]], 
-//     "B": [["1", "B"], ["0", "B"], ["", "C"]],
-//     "C": [["101", "D"], ["111", "D"], ["01", "D"]],
-//     "D": [["0", "E"], ["1", "F"]], 
-//     "E": [["0", "E"], ["", "G"]], 
-//     "F": [["1", "F"], ["", "G"]], 
-//     "G": [["1", "ACCEPT"], ["0", "ACCEPT"], ["11", "ACCEPT"]]
-// };
-// const sequence01 = ["A", "B", "C", "D", "G"]
-// const stateToBlock01: Record<string, string> = {
-//     "A": "A",
-//     "B": "B", 
-//     "C": "C", 
-//     "D": "D", 
-//     "E": "D", 
-//     "F": "D", 
-//     "G": "G", 
-//     "ACCEPT": "ACCEPT"
-// };
-
-
-
-
-// --- AB CFG ---
-// export const cfgABRules = {
-//     "A": [["a", "B1"], ["b", "B1"]],
-//     "B1": [["a", "B1"], ["b", "B1"], ["", "C"]],
-//     "C": [["aa", "D"], ["bb", "D"]],
-//     "D": [["ab", "B2"], ["ba", "B2"]],
-//     "B2": [["a", "B2"], ["b", "B2"], ["", "E"]],
-//     "E": [["aba", "ACCEPT"], ["baa", "ACCEPT"]]
-// };
-
-
-
-
-// const sequenceAB = ["A", "B", "C", "D", "B", "E"]
-// const StateToBlockAB: Record<string, string> = {
-//     "A": "A",
-//     "B1": "B",
-//     "C": "C",
-//     "D": "D",
-//     "B2": "B", 
-//     "E": "E", 
-//     "ACCEPT": "ACCEPT"
-// };
 
 
