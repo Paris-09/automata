@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { TableOptions } from "../components/TableOptions";
 import { AutomataSimulator } from "@/components/AutomataSimulator";
 import { Navbar } from "../components/Navbar";
+import { Footer } from "../components/Footer";
 import LetterGlitch from "@/components/LetterGlitch";
 import { ReactFlowProvider } from '@xyflow/react';
 type ModelType = "dfa" | "cfg" | "pda";
@@ -128,6 +129,7 @@ function Home() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

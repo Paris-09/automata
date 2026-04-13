@@ -350,6 +350,10 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
     );
   }, [selectedRegex]);
 
+  const regexLabel = selectedRegex === "regex1"
+    ? "(11+00) (1+0)* (101+111+01) (00*+11*) (1+0+11)"
+    : "(a+b) (a+b)* (aa+bb) (ab+ba) (a+b)* (aba+baa)";
+
   return (
     <div>
       {/* Header Container with Arrow pointing Up */}
@@ -422,7 +426,15 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
 
         {/* Right Column */}
         <div className="min-w-0">
-          <span className="font-semibold text-md tracking-wider block mb-6 text-left text-gray-400">Transition Diagram</span>
+          <div className="flex justify-between items-center mb-6">
+            <span className="font-semibold text-md tracking-wider text-gray-400">
+              Transition Diagram
+            </span>
+            <span className="font-semibold text-md tracking-wider text-gray-400">
+              Selected RegEx:{" "}
+              <span className="text-gray-600 font-normal ml-2">{regexLabel}</span>
+            </span>
+          </div>
           <div className="w-full h-[580px] bg-[#D9D9D9] border border-gray-200 overflow-hidden">
             {selectedModel === "dfa" ? (
               <ReactFlow 
@@ -440,7 +452,7 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
                 fitViewOptions={{ padding: 20}}
               >
                 <Background 
-                  color="#d1d1d13f" // This is the color of the dots/lines
+                  color="#515151" // This is the color of the dots/lines
                   variant={BackgroundVariant.Dots} 
                   style={{ backgroundColor: '#000000' }} // This is the actual canvas color
                 />

@@ -53,7 +53,7 @@ export function Navbar({ handleNavigate }: NavbarProps) {
         isVisible ? "translate-y-0" : "-translate-y-full" 
       )}
     >
-      <div className="flex h-16 w-full items-center justify-between px-20 bg-gray-100 backdrop-blur-md border-gray-200 shadow-sm">
+      <div className="flex h-13 w-full items-center justify-between px-20 bg-gray-100 backdrop-blur-md border-gray-200 shadow-sm">
         
         {/* Logo */}
         <div className="font-bold text-xl tracking-tighter shrink-0" onClick={() => navigate("/")}>

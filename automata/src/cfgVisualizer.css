@@ -6,6 +6,8 @@
     height: 100%;
     max-height: 580px;
     background-color: #000000;
+    background-image: radial-gradient(#515151 0.5px, transparent 0.5px);
+    background-size: 20px 20px;
     padding: 20px;
     font-family: inherit;
     color: #ffffff;
@@ -14,8 +16,8 @@
 }
 
 .cfg-panel {
-    border: 1px solid #333;
-    background: #0a0a0a;
+    border: 1px solid #ababab;
+    background: #1f1f1f;
     border-radius: 8px;
     padding: 15px;
 
@@ -26,6 +28,9 @@
     /* Custom Scrollbar */
     scrollbar-width: thin;
     scrollbar-color: #444 #0a0a0a;
+
+    display: flex;          
+    flex-direction: column;
 }
 
 .cfg-panel::-webkit-scrollbar {
@@ -42,10 +47,10 @@
     gap: 8px;
     font-size: 0.8rem;
     text-transform: uppercase;
-    color: #888;
+    color: #74DCFF;
     margin-bottom: 15px;
     letter-spacing: 2px;
-    border-bottom: 1px solid #222;
+    border-bottom: 1px solid #ababab;
     padding-bottom: 8px;
 }
 
@@ -63,10 +68,11 @@
     text-align: left;
     gap: 8px;
     font-size: 0.85rem;
+    flex: 1;
 }
 
 .vtps-label {
-    color: #888;
+    color: #efefef;
     font-weight: bold;
 }
 
@@ -79,28 +85,34 @@
 /* Production Styles */
 .production-section {
     margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    flex: 1; 
 }
 
 .production-header {
     margin-bottom: 10px;
     padding-bottom: 8px;
-    border-bottom: 1px solid #222;
+    border-bottom: 1px solid #454545;
     text-align: left;
 }
 
 .production-header .vtps-label {
-    color: #999;
+    color: #efefef;
 }
 
 .production-list {
     background: #111;
-    border: 1px solid #222;
-    padding: 12px 16px;
+    border: 1px solid #454545;
+    padding: 17px 16px;
     border-radius: 6px;
     margin-top: 5px;
+    margin-left: -10px;
+    margin-right: 2px;
     display: flex;
     flex-direction: column;
     gap: 8px;
+    flex: 1;
 }
 
 .rule-line {
@@ -149,7 +161,7 @@
 /* Empty State Updates */
 .empty-icon {
     margin-bottom: 12px;
-    opacity: 0.6;
+    opacity: 0.9;
 }
 
 /* Error States */
@@ -194,7 +206,7 @@
 
 .trace-item.past {
     border-left-color: #3b82f6;
-    opacity: 0.6;
+    opacity: 0.8;
 }
 
 .trace-item.active {
