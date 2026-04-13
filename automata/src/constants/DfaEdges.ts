@@ -1,17 +1,20 @@
-import  {type Edge, MarkerType } from "@xyflow/react";
+import { type Edge, MarkerType } from "@xyflow/react";
 
-type HorizontalSide = 'top' | 'bottom'
-type HorizontalPos = 'left' | 'mid' | 'right'
-type VerticalSide = 'left' | 'right'
-type VerticalPos = 'top' | 'mid' | 'bottom'
+type HorizontalSide = "top" | "bottom";
+type HorizontalPos = "left" | "mid" | "right";
+type VerticalSide = "left" | "right";
+type VerticalPos = "top" | "mid" | "bottom";
 
 const createEdge = (
     id: string,
-    sourceHandle: `source-${HorizontalSide}-${HorizontalPos}` | `source-${VerticalSide}-${VerticalPos}`,
-    targetHandle: `target-${HorizontalSide}-${HorizontalPos}` | `target-${VerticalSide}-${VerticalPos}`,
+    sourceHandle:
+        | `source-${HorizontalSide}-${HorizontalPos}`
+        | `source-${VerticalSide}-${VerticalPos}`,
+    targetHandle:
+        | `target-${HorizontalSide}-${HorizontalPos}`
+        | `target-${VerticalSide}-${VerticalPos}`,
 ): Edge => {
-
-    const [source, label, target] = id.split('-')
+    const [source, label, target] = id.split("-");
     const isSelfLoop = source == target;
 
     return {
@@ -19,19 +22,19 @@ const createEdge = (
         source: source,
         target: target,
         label: label,
-        labelStyle: { fill: '#ffffff', fontWeight: 600, fontSize: 15 },
-        labelBgStyle: { fill: '#413d3d', fillOpacity: 0.1 },
+        labelStyle: { fill: "#ffffff", fontWeight: 600, fontSize: 15 },
+        labelBgStyle: { fill: "#413d3d", fillOpacity: 0.1 },
         sourceHandle,
         targetHandle,
         type: isSelfLoop ? "default" : "straight",
         ...(isSelfLoop && {
-            pathOptions: {curvature: 0.6}
+            pathOptions: { curvature: 0.6 },
         }),
         animated: false,
-        markerEnd: { type: MarkerType.ArrowClosed,  color: '#504f4f' },
-        style: { strokeWidth: 3, stroke: '#57565657', },
-    }
-}
+        markerEnd: { type: MarkerType.ArrowClosed, color: "#504f4f" },
+        style: { strokeWidth: 3, stroke: "#57565657" },
+    };
+};
 
 export const Dfa01Edges: Edge[] = [
     createEdge("q0-0-q1", "source-top-right", "target-left-bottom"),
@@ -40,40 +43,54 @@ export const Dfa01Edges: Edge[] = [
     createEdge("q1-0-q4", "source-right-bottom", "target-top-left"),
     createEdge("q1-1-q2", "source-bottom-mid", "target-top-mid"),
 
-    createEdge("q2-0-q2", "source-bottom-left", "target-left-bottom"),
-    createEdge("q2-1-q2", "source-bottom-right", "target-right-bottom"),
+    createEdge("q2-0-q2", "source-bottom-left", "target-left-top"),
+    createEdge("q2-1-q2", "source-bottom-right", "target-right-top"),
 
     createEdge("q3-0-q2", "source-top-mid", "target-bottom-mid"),
     createEdge("q3-1-q4", "source-right-top", "target-bottom-left"),
 
-    createEdge("q4-0-q5", "source-right-mid", "target-left-mid"),
-    createEdge("q4-1-q4", "source-top-mid", "target-right-top"),
+    createEdge('q4-0-q5', 'source-top-right', 'target-left-bottom'),
+    createEdge('q4-1-q6', 'source-bottom-right', 'target-left-top'),
 
-    createEdge("q5-0-q5", "source-top-mid", "target-right-top"),
-    createEdge("q5-1-q7", "source-right-mid", "target-left-mid"),
+    createEdge('q5-0-q5', 'source-left-mid', 'target-top-right'),
+    createEdge('q5-1-q10', 'source-right-mid', 'target-left-mid'),
 
-    createEdge("q6-0-q9", "source-bottom-right", "target-left-top"),
-    createEdge("q6-1-q11", "source-right-bottom", "target-left-bottom"),
+    createEdge('q6-0-q5', 'source-top-mid', 'target-bottom-mid'),
+    createEdge('q6-1-q8', 'source-right-top', 'target-bottom-left'),
 
-    createEdge("q7-0-q6", "source-top-mid", "target-bottom-mid"),
-    createEdge("q7-1-q10", "source-right-mid", "target-left-top"),
+    createEdge('q7-0-q5', 'source-bottom-left', 'target-right-top'),
+    createEdge('q7-1-q10', 'source-bottom-right', 'target-left-top'),
 
-    createEdge("q8-0-q5", "source-left-mid", "target-bottom-right"),
-    createEdge("q8-1-q7", "source-top-mid", "target-bottom-mid"),
+    createEdge('q8-0-q5', 'source-top-left', 'target-right-bottom'),
+    createEdge('q8-1-q9', 'source-bottom-mid', 'target-top-mid'),
 
-    createEdge("q9-0-q9", "source-bottom-mid", "target-right-bottom"),
-    createEdge("q9-1-q11", "source-right-top", "target-bottom-left"),
+    createEdge('q9-0-q11', 'source-right-mid', 'target-left-mid'),
+    createEdge('q9-1-q13', 'source-right-top', 'target-left-bottom'),
 
-    createEdge("q10-0-q8", "source-bottom-left", "target-right-top"),
-    createEdge("q10-1-q12", "source-bottom-right", "target-left-top"),
+    createEdge('q10-0-q11', 'source-bottom-mid', 'target-top-mid'),
+    createEdge('q10-1-q12', 'source-right-mid', 'target-left-mid'),
 
-    createEdge("q11-0-q6", "source-left-top", "target-right-top"),
-    createEdge("q11-1-q12", "source-bottom-mid", "target-top-mid"),
+    createEdge('q11-0-q15', 'source-right-top', 'target-left-bottom'),
+    createEdge('q11-1-q17', 'source-right-mid', 'target-left-mid'),
 
-    createEdge("q12-0-q8", "source-left-mid", "target-right-mid"),
-    createEdge("q12-1-q12", "source-right-top", "target-bottom-left"),
-]
+    createEdge('q12-0-q7', 'source-left-top', 'target-right-bottom'),
+    createEdge('q12-1-q14', 'source-right-mid', 'target-left-mid'),
 
+    createEdge('q13-0-q15', 'source-right-mid', 'target-left-mid'),
+    createEdge('q13-1-q14', 'source-top-right', 'target-bottom-left'),
+
+    createEdge('q14-0-q15', 'source-bottom-mid', 'target-top-mid'),
+    createEdge('q14-1-q14', 'source-bottom-right', 'target-right-mid'),
+
+    createEdge('q15-0-q15', 'source-top-right', 'target-right-mid'),
+    createEdge('q15-1-q17', 'source-right-bottom', 'target-top-left'),
+
+    createEdge('q16-0-q7', 'source-left-top', 'target-right-top'),
+    createEdge('q16-1-q14', 'source-left-bottom', 'target-top-right'),
+
+    createEdge('q17-0-q11', 'source-right-bottom', 'target-right-bottom'),
+    createEdge('q17-1-q16', 'source-top-right', 'target-bottom-right'),
+];
 
 export const DfaAbEdges: Edge[] = [
     createEdge("q0-a,b-q1", "source-right-mid", "target-left-mid"),
@@ -125,5 +142,4 @@ export const DfaAbEdges: Edge[] = [
 
     createEdge("q16-a-q11", "source-right-top", "target-bottom-mid"),
     createEdge("q16-b-q14", "source-left-top", "target-bottom-right"),
-
-]
+];
