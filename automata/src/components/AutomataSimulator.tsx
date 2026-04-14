@@ -50,13 +50,12 @@ const nodeTypes = {
  * DEMO graph generator.
  */
 function getDemoGraph(selectedRegex: RegexChoice) {
-  if (selectedRegex === "regex1") {
+  if (selectedRegex === "regex2") {
     const nodes = Dfa01Nodes
     const edges = Dfa01Edges
 
     return { nodes, edges };
   }
-  // For regex2
   const nodes = DfaAbNodes
   const edges = DfaAbEdges
 
@@ -119,8 +118,8 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
 
   // Dfa Values based on the selected Regex
   const dfaValues = useMemo(() => {
-    if (selectedRegex == 'regex2')  return DfaAbConfig
-    if (selectedRegex == 'regex1') return Dfa01Config
+    if (selectedRegex == 'regex1')  return DfaAbConfig
+    if (selectedRegex == 'regex2') return Dfa01Config
 
     return Dfa01Config
 
@@ -280,7 +279,7 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
         setCurrentStep(-1);
         setCfgError(null);
 
-        const engine = selectedRegex == 'regex1' ? cfgEngine01 : cfgEngineAB
+        const engine = selectedRegex == 'regex2' ? cfgEngine01 : cfgEngineAB
         const result = engine.trace(input)
 
         if (result.success) {
@@ -350,7 +349,7 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
     );
   }, [selectedRegex]);
 
-  const regexLabel = selectedRegex === "regex1"
+  const regexLabel = selectedRegex === "regex2"
     ? "(11+00) (1+0)* (101+111+01) (00*+11*) (1+0+11)"
     : "(a+b) (a+b)* (aa+bb) (ab+ba) (a+b)* (aba+baa)";
 
@@ -461,7 +460,7 @@ export function AutomataSimulator({ selectedRegex, selectedModel, handleNavigate
             ) : (selectedModel === "cfg") ? (
               <CfgVisualizer
                 steps={cfgSteps}
-                grammarFormal={selectedRegex === "regex1" ? Cfg01Grammar.formal : CfgABGrammar.formal}
+                grammarFormal={selectedRegex === "regex2" ? Cfg01Grammar.formal : CfgABGrammar.formal}
                 currentStepIndex={currentStep}
                 errorMsg={cfgError}
                 isSimulationComplete={status === "VALID" || (currentStep === cfgSteps.length - 1 && !cfgError)}
