@@ -132,9 +132,9 @@ export function TableOptions({
                     className="mt-1 h-5 w-5 shrink-0 accent-[#74DCFF] cursor-pointer"
                   />
                   <span className="text-sm font-mono break-all leading-tight">
-                    (11+00) (1+0)* (101+111+01)
+                    (a+b) (a+b)* (aa+bb) (ab+ba)
                     <span className="block h-1.5"></span>
-                    (00*+11*) (1+0+11)
+                    (a+b)* (aba+baa)
                   </span>
                 </label>
 
@@ -148,9 +148,9 @@ export function TableOptions({
                     className="mt-1 h-5 w-5 shrink-0 accent-[#74DCFF] cursor-pointer"
                   />
                   <span className="text-sm font-mono break-all leading-tight">
-                    (a+b) (a+b)* (aa+bb) (ab+ba)
+                    (11+00) (1+0)* (101+111+01)
                     <span className="block h-1.5"></span>
-                    (a+b)* (aba+baa)
+                    (00*+11*) (1+0+11)
                   </span>
                 </label>
               </div>
